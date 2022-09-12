@@ -31,4 +31,12 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
  6. Una vez hecho lo nterior, en la misma consola escribimos: "code ." y nos abrirá visual studio code para comenzar a trabajar en el proyecto.
  
  ## 👥 Autores
+- David Isaí Alfaro López AL201498 
+- Daniel Iván López García LG190078 
+- Verónica Alexandra Payés Carballo PC191249
+- Gerardo Enrique Palacios Díaz PD200491
+- Keila Jael Rivas Jiménez RJ202336 
  ## ⚖️ Licencia
+ Esta aplicación cuenta con la licencia Atribución-SinDerivadas(CC BY-ND), que menciona lo siguiente:
+ "Esta licencia permite a otros reutilizar el trabajo para cualquier propósito, incluso comercialmente; sin embargo, no se puede compartir con otros en forma adaptada, y se le debe proporcionar crédito."
+ ## 🗂️ Documentación
