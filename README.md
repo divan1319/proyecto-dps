@@ -28,7 +28,7 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
  3. Pega el siguiente comando: "git clone https://github.com/divan1319/proyecto-dps".
  4. Luego, en la misma consola escribe el siguiente comando: "cd proyecto-dps" para entrar a la carpeta que recientemente clonamos.
  5. Después de entrar a la carpeta, escribimos en la misma consola el siguiente comando: "npm i" o "yarn i" para instalar todas las dependecnias que el proyecto ocupa.
- 6. Una vez hecho lo nterior, en la misma consola escribimos: "code ." y nos abrirá visual studio code para comenzar a trabajar en el proyecto.
+ 6. Una vez hecho lo anterior, en la misma consola escribimos: "code ." y nos abrirá visual studio code para comenzar a trabajar en el proyecto.
  
  ## 👥 Autores
  ### Grupo Teórico 01T
