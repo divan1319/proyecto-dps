@@ -31,6 +31,7 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
  6. Una vez hecho lo nterior, en la misma consola escribimos: "code ." y nos abrirá visual studio code para comenzar a trabajar en el proyecto.
  
  ## 👥 Autores
+ ### Grupo Teórico 01T
 - David Isaí Alfaro López AL201498 
 - Daniel Iván López García LG190078 
 - Verónica Alexandra Payés Carballo PC191249
@@ -38,5 +39,9 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
 - Keila Jael Rivas Jiménez RJ202336 
  ## ⚖️ Licencia
  Esta aplicación cuenta con la licencia Atribución-SinDerivadas(CC BY-ND), que menciona lo siguiente:
+ 
  "Esta licencia permite a otros reutilizar el trabajo para cualquier propósito, incluso comercialmente; sin embargo, no se puede compartir con otros en forma adaptada, y se le debe proporcionar crédito."
  ## 🗂️ Documentación
+ - Documento fase I [https://udbedu-my.sharepoint.com/:w:/g/personal/al201498_alumno_udb_edu_sv/EYVmdAw6ekpBln7TbvYU4igBmKtmwEJNWpLkvnviD3z5nw?rtime=pXgCwl6U2kg]
+ - Link Trello [https://trello.com/b/cvzuACrb/cronograma-proyecto-venta-renta-de-autos]
+ - Link Mock Ups [https://www.figma.com/file/vqKWVVskSfPCIDQzR25LUf/mockups_Proyecto_DPS_G01T]
