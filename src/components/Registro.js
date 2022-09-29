@@ -1,8 +1,6 @@
 import React,{useState} from "react";
-import { View,TextInput,Text,Image,StyleSheet, 
-TouchableHighlight, ScrollView, StatusBar} from "react-native";
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
+import { View,Text,Image,StyleSheet, 
+ScrollView, StatusBar} from "react-native";
 import Texto from './Texto';
 import Boton from "./Button";
 
@@ -60,10 +58,11 @@ const styles=StyleSheet.create({
     },
     banner:{
         backgroundColor:'#292929',
-        height:210,
+        marginTop:35,
+        height:250,
         width:'100%',
         alignItems:'center',        
-        zIndex:-1,        
+        zIndex:0,        
     },
     fondo:{
         backgroundColor:'#292929',
@@ -74,9 +73,10 @@ const styles=StyleSheet.create({
     },
     exit:{        
         position:'absolute',
-        top:15,
-        right:15,        
-        color:'#FFFFFF'
+        top:10,
+        right:25,        
+        color:'#FFFFFF', 
+        zIndex:1,       
     },
     Botoncamara:{
         margin:15,
@@ -108,8 +108,7 @@ const styles=StyleSheet.create({
         borderRadius:20,
         textAlign:'center',
         color:'#EA3333',
-        height:40,
-        height:40,
+        height:40,        
         marginTop:15,
         marginBottom:15,
         paddingTop:8,
@@ -123,19 +122,14 @@ export default function Registro(){
     const [correo,SetCorreo]=useState('');
     const [telefono,SetTelefono]=useState('');
     const [dui,SetDui]=useState('');
-    const [contraseña,SetContraseña]=useState('');
-    console.log(nombre);
-    console.log(correo);
-    console.log(telefono);
-    console.log(dui);
-    console.log(contraseña);
+    const [contrasena,SetContrasena]=useState('');    
 
     return(        
         <>
-            <StatusBar></StatusBar>                
+            <StatusBar hidden={false} translucent={true} backgroundColor={"black"} barStyle={"default"}></StatusBar>                
             <ScrollView style={styles.fondo}>
-            <View style={styles.banner}>
-                <Boton style={styles.exit} fuente="Feather" tipo="Icono" nfuente="x" sfuente={styles.exit} evento={"Salir"} />                
+            <View style={styles.banner}>              
+                <Boton style={styles.exit} fuente="Octicons" tipo="Icono" nfuente="x" sfuente={null} iconcolor={"white"} evento={"Salir"} />                
                 <Image style={styles.img} source={require('../img/Banner.png')} />
             </View>
             <View style={styles.formulario}>
@@ -152,10 +146,11 @@ export default function Registro(){
                 <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
                 ktype="number-pad" txt1="DUI" txt2="00000000-0" SetValue={SetDui}/>
                 <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
-                ktype="ascii-capable" txt1="Crear una contraseña" txt2="Ingresa una contraseña" SetValue={SetContraseña}/>
+                ktype="ascii-capable" txt1="Crear una contraseña" txt2="Ingresa una contraseña" SetValue={SetContrasena}/>
                 <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
-                ktype="ascii-capable" txt1="Verifica tu contraseña" txt2="Verifica una contraseña"/>               
-                <Boton style={styles.BotonCrear} texto={"¡Crear Cuenta!"} tipo="Boton" fuente={null} evento={[{nombre},{correo},{contraseña},{telefono},{dui}]}/>          
+                ktype="ascii-capable" txt1="Verifica tu contraseña" txt2="Verifica una contraseña" SetValue={SetContrasena}/>               
+                <Boton style={styles.BotonCrear} texto={"¡Crear Cuenta!"} tipo="Boton" fuente={null} 
+                evento={[{nombre},{correo},{contrasena},{telefono},{dui}]}/>          
                 <Boton style={styles.BotonCancelar} texto={"Cancelar"} tipo="Boton" fuente={null} evento={"Cancelar"}/>                
                 </View>                
             </ScrollView>
