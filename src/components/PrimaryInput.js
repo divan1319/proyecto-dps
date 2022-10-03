@@ -15,7 +15,7 @@ export default function PrimaryInput(props) {
                     borderColor: Colors.borders,
                     borderRadius: 25,
                     backgroundColor: Colors.secondary,
-                    height: 40,
+                    height: 45,
                     paddingHorizontal: 20,
                     marginTop: 8,
                 }}

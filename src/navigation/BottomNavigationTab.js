@@ -4,6 +4,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from './../pages/Home';
 import AddVehicle from './../pages/AddVehicle';
 import Profile from './../pages/Profile';
+import Register from "../pages/Register";
+import VehicleInformation from "../pages/VehicleInformation";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +24,8 @@ function BottomTab() {
                         size = 45;
                     }else if(route.name === "Profile") {
                         iconName = focused ? 'account' : 'account-outline';
+                    }else {
+                        iconName = focused ? 'file-question' : 'file-question-outline';
                     }
 
                     return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
@@ -35,6 +39,8 @@ function BottomTab() {
             <Tab.Screen name="Home" component={Home}/>
             <Tab.Screen name="AddVehicle" component={AddVehicle}/>
             <Tab.Screen name="Profile" component={Profile}/>
+            <Tab.Screen name="VehicleInformation" component={VehicleInformation}/>
+            <Tab.Screen name="Register" component={Register}/>
         </Tab.Navigator>
     );
 }
