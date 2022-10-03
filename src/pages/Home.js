@@ -4,9 +4,12 @@ import Constants from 'expo-constants';
 import SecondaryButton from "../components/SecondaryButton";
 import PrimaryInput from "../components/PrimaryInput";
 import Colors from "../utils/Colors";
+import ImgPicker from "../components/ImgPicker";
+import PrimaryBadge from './../components/PrimaryBadge';
 
 export default function Home() {
     const [text, onChangeText] = React.useState('');
+    const [image, setImage] = React.useState(null);
 
     return (
         //main container, use it for put your code
@@ -16,6 +19,8 @@ export default function Home() {
                 Click me
             </SecondaryButton>
             <PrimaryInput title="Introduce tu nombre" value={text} onChangeText={onChangeText} placeholder="nombre..." keyboardType='numeric'/>
+            <ImgPicker image={image} setImage={setImage}></ImgPicker>
+            <PrimaryBadge></PrimaryBadge>
         </View>
     );
 }
