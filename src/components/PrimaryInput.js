@@ -5,12 +5,13 @@ import Colors from "../utils/Colors";
 
 export default function PrimaryInput(props) {
     return (
-        <View>
+        <View style={{...props.viewStyle,}}>
             <Text variant="titleSmall">
                 {props.title}
             </Text>
             <TextInput
                 style={{
+                    ...props.inputstyle,
                     borderWidth: 1,
                     borderColor: Colors.borders,
                     borderRadius: 25,
@@ -23,6 +24,7 @@ export default function PrimaryInput(props) {
                 onChangeText={props.onChangeText}
                 placeholder={props.placeholder}
                 keyboardType={props.keyboardType}
+                secureTextEntry={props.secureTextEntry}
             />
         </View>
     );

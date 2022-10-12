@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, AsyncStorage } from "react-native";
 import Constants from 'expo-constants';
 import SecondaryButton from "../components/SecondaryButton";
 import PrimaryButton from "./../components/PrimaryButton";
@@ -29,7 +29,11 @@ export default function Home() {
         //main container, use it for put your code
         <View style={styles.container}>
             <Text>Home Screen</Text>
-            <PrimaryButton>Click aquí</PrimaryButton>
+            <PrimaryButton onPress={async () => {
+                await AsyncStorage.clear();
+            }}>
+                Click aquí
+            </PrimaryButton>
             <SecondaryButton onPress={() => console.log("ok")} icon="email">
                 Click me
             </SecondaryButton>
