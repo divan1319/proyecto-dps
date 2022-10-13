@@ -25,7 +25,7 @@ export default function ImgPicker(props) {
                           {
                             text: "Cancel",
                             onPress: () => {},
-                            style: "cancel"
+                            style:"cancel"
                           },
                           { text: "OK", onPress: () => {} }
                         ]
@@ -64,6 +64,7 @@ export default function ImgPicker(props) {
                         backgroundColor: Colors.tertiary,
                         borderRadius: 20,
                         margin: 0
+                   
                     }}
                 >
                 </IconButton>

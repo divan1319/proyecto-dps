@@ -28,6 +28,7 @@ export default function SelectInput(props) {
                 setSelected={props.setSelected}
                 onSelect={props.onSelect}
                 boxStyles={{
+                    
                     borderWidth: 1,
                     borderColor: Colors.borders,
                     borderRadius: 25,
@@ -35,6 +36,7 @@ export default function SelectInput(props) {
                     height: 45,
                     paddingHorizontal: 20,
                     marginTop: 8,
+                    
                 }}
                 dropdownStyles={{
                     backgroundColor: Colors.tertiary,
