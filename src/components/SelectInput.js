@@ -19,7 +19,7 @@ export default function SelectInput(props) {
     */
     
     return (
-        <View>
+        <View style={props.containerStyle}>
             <Text variant="titleSmall">
                 {props.title}
             </Text>
