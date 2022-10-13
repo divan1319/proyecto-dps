@@ -3,6 +3,7 @@ import { Button } from "react-native-paper";
 import Colors from "../utils/Colors";
 
 export default function PrimaryButton(props) {
+    
     return (
         <Button 
             mode="contained" 
