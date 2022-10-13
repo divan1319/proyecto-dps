@@ -71,7 +71,7 @@ class Login extends React.Component {
                         >
                             ¿Aún no tienes una cuenta? ¡Crea una!
                         </Text>
-                        <SecondaryButton onPress={() => {}}>
+                        <SecondaryButton onPress={() => this.props.navigation.navigate('SignUp')}>
                             Crear cuenta
                         </SecondaryButton>
                     </View>

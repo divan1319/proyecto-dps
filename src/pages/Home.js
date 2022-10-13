@@ -22,7 +22,7 @@ export default function Home() {
 
 
     //handle if the filter modal should be visible or not.
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(false);
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
     //styles for the modal

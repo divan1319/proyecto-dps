@@ -39,8 +39,6 @@ function BottomTab() {
             <Tab.Screen name="Home" component={Home}/>
             <Tab.Screen name="AddVehicle" component={AddVehicle}/>
             <Tab.Screen name="Profile" component={Profile}/>
-            <Tab.Screen name="VehicleInformation" component={VehicleInformation}/>
-            <Tab.Screen name="Register" component={Register}/>
         </Tab.Navigator>
     );
 }

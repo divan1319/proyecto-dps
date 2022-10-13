@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import { View,Text,Image,StyleSheet, 
 ScrollView, StatusBar} from "react-native";
-import Texto from './Texto';
-import Boton from "./Button";
+import Texto from '../components/Texto';
+import Boton from "../components/Button";
 
 
 const styles=StyleSheet.create({

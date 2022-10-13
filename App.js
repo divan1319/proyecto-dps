@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import BottomTab from './src/navigation/BottomNavigationTab';
 import Login from './src/pages/Login';
+import Registro from './src/pages/Registro'
 
 const AppStack = createStackNavigator(
   {
@@ -18,6 +19,7 @@ const AppStack = createStackNavigator(
 const AuthStack = createStackNavigator(
   {
     Login: Login,
+    SignUp: Registro
   },
   {
     headerMode: 'none'
