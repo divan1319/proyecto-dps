@@ -1,11 +1,14 @@
 import React from "react";
-import { View, KeyboardAvoidingView, StyleSheet, AsyncStorage, ImageBackground, BackHandler } from "react-native";
+import { View, KeyboardAvoidingView, StyleSheet,ImageBackground, BackHandler, Alert } from "react-native";
 import { IconButton, Text } from "react-native-paper";
 import PrimaryInput from "./../components/PrimaryInput";
 import PrimaryButton from './../components/PrimaryButton';
 import SecondaryButton from './../components/SecondaryButton';
 import Constants from 'expo-constants';
 import Colors from "../utils/Colors";
+import api from '../data/api';
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class Login extends React.Component {
 
@@ -13,10 +16,28 @@ class Login extends React.Component {
         email: '',
         password: '',
     }
-
+    
     _logIn = async () => {
-        await AsyncStorage.setItem('userToken', 'abc');
-        this.props.navigation.navigate('App');
+        const datos = {
+            email:this.state.email,
+            password:this.state.password
+        }
+        await axios.post(api.server+'login.php',datos).then( (res) =>{
+            
+            console.log(res.data)
+            if(res.data.user){
+                Alert.alert("¡Aviso!","¡Inicio Exitoso!")
+                console.log(res.data.user.nombre)
+                const UserData = [{id:res.data.user.id,nombre:res.data.user.nombre,correo:res.data.user.correo,dui:res.data.user.dui,cel:res.data.user.telefono}]
+                AsyncStorage.setItem('userData', JSON.stringify(UserData));
+
+                this.props.navigation.navigate('App');
+            }
+
+        }).catch (error =>{
+            console.log(error)
+        })
+
     };
 
     render() {
