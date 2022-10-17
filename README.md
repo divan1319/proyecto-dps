@@ -47,3 +47,4 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
  - Link Mock Ups [https://www.figma.com/file/vqKWVVskSfPCIDQzR25LUf/mockups_Proyecto_DPS_G01T]
  - Manual Técnico [https://drive.google.com/file/d/1VThrB2Wnr-qHG-i_WHL7b55LsAGWCc3Z/view?usp=sharing]
  - Manual de Usuario [https://drive.google.com/file/d/1_evmjkfmPD6plNxbyZYeSEwv1v_o7obM/view?usp=sharing]
+ - Link Video [Avance proyecto - FASE II] [https://drive.google.com/file/d/1-Tr3v9YynOwDWXkBLvouqDfe_vabTRSg/view?usp=sharing]
