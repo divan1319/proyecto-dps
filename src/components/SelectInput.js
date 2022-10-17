@@ -24,6 +24,7 @@ export default function SelectInput(props) {
                 {props.title}
             </Text>
             <SelectList
+            key={props.key}
                 data={props.data}
                 setSelected={props.setSelected}
                 onSelect={props.onSelect}

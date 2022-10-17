@@ -1,8 +1,10 @@
 import React,{useState} from "react";
 import { View,Text,Image,StyleSheet, 
-ScrollView, StatusBar} from "react-native";
+ScrollView, StatusBar, Alert} from "react-native";
 import Texto from '../components/Texto';
 import Boton from "../components/Button";
+import axios from "axios";
+import server from '../data/api';
 
 
 const styles=StyleSheet.create({
@@ -116,14 +118,30 @@ const styles=StyleSheet.create({
     
 })
 
-export default function Registro(){
+export default function Registro(props){
 
     const [nombre,SetNombre]=useState('');
     const [correo,SetCorreo]=useState('');
     const [telefono,SetTelefono]=useState('');
     const [dui,SetDui]=useState('');
-    const [contrasena,SetContrasena]=useState('');    
+    const [contrasena,SetContrasena]=useState('');
+    
+    const datos = {
+        nombre: nombre,
+        contrasena: contrasena,
+        correo:correo,
+        dui:dui,
+        telefono:telefono
+    }
+    const registro = async () => {
+        await axios.post(server.server+'register.php',datos).then( (res) =>{
+            Alert.alert("¡Aviso!","¡Registro exitoso!");
+            props.navigation.navigate('Login');
 
+        }).catch( err =>{
+            console.log(err)
+        })
+    }
     return(        
         <>
             <StatusBar hidden={false} translucent={true} backgroundColor={"black"} barStyle={"default"}></StatusBar>                
@@ -146,12 +164,10 @@ export default function Registro(){
                 <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
                 ktype="number-pad" txt1="DUI" txt2="00000000-0" SetValue={SetDui}/>
                 <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
-                ktype="ascii-capable" txt1="Crear una contraseña" txt2="Ingresa una contraseña" SetValue={SetContrasena}/>
-                <Texto styletxt={styles.texto} styleinputtxt={styles.InputText} 
-                ktype="ascii-capable" txt1="Verifica tu contraseña" txt2="Verifica una contraseña" SetValue={SetContrasena}/>               
+                ktype="ascii-capable" secureTextEntry={true} txt1="Crear una contraseña" txt2="Ingresa una contraseña" SetValue={SetContrasena}/>          
                 <Boton style={styles.BotonCrear} texto={"¡Crear Cuenta!"} tipo="Boton" fuente={null} 
-                evento={[{nombre},{correo},{contrasena},{telefono},{dui}]}/>          
-                <Boton style={styles.BotonCancelar} texto={"Cancelar"} tipo="Boton" fuente={null} evento={"Cancelar"}/>                
+                onPress={registro}  />          
+                <Boton style={styles.BotonCancelar} texto={"Cancelar"} tipo="Boton" fuente={null} onPress={ () => props.navigation.navigate('Login')} />                
                 </View>                
             </ScrollView>
         </>        

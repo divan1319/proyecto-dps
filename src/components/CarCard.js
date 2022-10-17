@@ -19,7 +19,7 @@ export default function CarCard(props) {
 
     */
     return (
-        <Card style={styles.container}>
+        <Card style={styles.container} key={props.key}>
             <View style={{display: 'flex', flexDirection: 'row',}}>
                 <Image style={styles.carImg} source={{uri: props.uri}}/>
                 <View style={styles.carInfo}>
