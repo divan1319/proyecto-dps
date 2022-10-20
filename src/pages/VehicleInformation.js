@@ -14,9 +14,7 @@ export default function VehicleInformation() {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: Constants.statusBarHeight,
         backgroundColor: Colors.backgroundScreen,
-        minHeight: '100%',
-        paddingHorizontal: 20,
+        minHeight: '100%'
     }
 });
