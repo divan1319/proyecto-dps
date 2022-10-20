@@ -1,11 +1,37 @@
-import React from "react";
-import { ScrollView, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import React,{useEffect,useState} from "react";
+import { ScrollView, StyleSheet, TouchableWithoutFeedback, View , BackHandler} from "react-native";
 import Constants from 'expo-constants';
 import Colors from "../utils/Colors";
 import { Avatar, Card, Text, Button } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Profile() {
+        const [userId,setId] = useState();
+        const [userNameN,setName] = useState();
+        const [userMail,setMail] = useState();
+        const [userDui,setDui] = useState();
+        const [userCel,setCel] = useState();
+        
+        const Logout = async () =>{
+            await AsyncStorage.clear();
+            BackHandler.exitApp();
+        }
+
+        const dataUsuario = async ()=>{
+            const value = JSON.parse( await AsyncStorage.getItem('userData'));
+            setId(value[0].id)
+            setName(value[0].nombre)
+            setMail(value[0].correo)
+            setDui(value[0].dui)
+            setCel(value[0].cel)
+
+        }
+        useEffect( () =>{
+            dataUsuario()
+        },[])
+    
     return (
         //main container, use it for put your code
         <View style={styles.container}>
@@ -13,8 +39,8 @@ export default function Profile() {
                 <Text variant="titleLarge" style={styles.title}>
                     Mi perfil
                 </Text>
-                <Avatar.Image size={80}/>
-                <Text variant="headlineSmall" style={styles.userName}>Juan Pérez</Text>
+                <Avatar.Image size={80} source={{uri:'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'}} />
+                <Text variant="headlineSmall" style={styles.userName}>{userNameN}</Text>
             </View>
             <ScrollView style={styles.mainContent}>
                 <Text variant="titleLarge" style={{color: Colors.primary, fontWeight: 'bold', marginBottom: 10}}>
@@ -26,21 +52,21 @@ export default function Profile() {
                     </Text>
                     <View style={styles.infoItem}>
                         <MaterialCommunityIcons name="email" size={24} color={Colors.primary} style={{marginRight: 10}}/>
-                        <Text variant="bodyLarge">juan.pe123@gmail.com</Text>
+                        <Text variant="bodyLarge">{userMail}</Text>
                     </View>
                     <Text variant="titleMedium" style={{color: Colors.primary, fontWeight: 'bold'}}>
                         Número teléfonico
                     </Text>
                     <View style={styles.infoItem}>
                         <MaterialCommunityIcons name="phone" size={24} color={Colors.primary} style={{marginRight: 10}}/>
-                        <Text variant="bodyLarge">7257-2823</Text>
+                        <Text variant="bodyLarge">{userCel}</Text>
                     </View>
                     <Text variant="titleMedium" style={{color: Colors.primary, fontWeight: 'bold'}}>
-                        Correo electrónico
+                        DUI
                     </Text>
                     <View style={styles.infoItem}>
                         <MaterialCommunityIcons name="clipboard-account" size={24} color={Colors.primary} style={{marginRight: 10}}/>
-                        <Text variant="bodyLarge">juan.pe123@gmail.com</Text>
+                        <Text variant="bodyLarge">{userDui}</Text>
                     </View>
                 </Card>
                 <View style={styles.options}>
@@ -56,7 +82,7 @@ export default function Profile() {
                             <Text variant="bodyLarge">Cambiar contraseña</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => {}}>
+                    <TouchableWithoutFeedback onPress={Logout}>
                         <View style={styles.optionItem}>
                             <MaterialCommunityIcons name="logout" size={24} color={Colors.primary} style={{marginRight: 10, marginLeft: 5}}/>
                             <Text variant="bodyLarge">Cerrar sesión</Text>

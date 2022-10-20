@@ -7,7 +7,7 @@ export default function Texto(props){
     return(
         <>
         <Text style={styletxt}>{txt1}</Text>
-        <TextInput style={styleinputtxt} keyboardType={ktype} placeholder={txt2} onChangeText={txt=>SetValue(txt)}/>
+        <TextInput secureTextEntry={props.secureTextEntry} style={styleinputtxt} keyboardType={ktype} placeholder={txt2} onChangeText={txt=>SetValue(txt)}/>
         </>
     );
 }

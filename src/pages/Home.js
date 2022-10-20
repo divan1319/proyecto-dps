@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, AsyncStorage, TextInput, TouchableWithoutFeedback, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, TextInput, TouchableWithoutFeedback, ScrollView } from "react-native";
 import Constants from 'expo-constants';
 import { IconButton, Text, Avatar, Portal, Modal, Provider, Button } from "react-native-paper";
 import PrimaryButton from "./../components/PrimaryButton";
@@ -8,7 +8,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from "../utils/Colors";
 import CarCard from "../components/CarCard";
 import SelectInput from "../components/SelectInput";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../data/api';
+import axios from "axios";
 export default function Home() {
     const [search, setSearch] = React.useState("");
     
@@ -19,7 +21,19 @@ export default function Home() {
     const [year, setYear] = React.useState("");
     const [status, setStatus] = React.useState("");
 
+    const[vehicles, setVehicles] = useState([]);
 
+    const DataVehicle = async () =>{
+        await axios.get(api.server+'vehiculos').then(res => {
+            //console.log(res.data.results)
+            if(res.status == "200"){
+                setVehicles(res.data.results);
+                console.log("Datos cargados")
+            }
+        }).catch(error =>{
+            console.log(error)
+        })
+    }
 
     //handle if the filter modal should be visible or not.
     const [visible, setVisible] = React.useState(false);
@@ -39,6 +53,11 @@ export default function Home() {
         {key: 3, value: "Tercero"},
         {key: 4, value: "Cuarto"},
     ];
+
+    useEffect( () =>{
+        DataVehicle();
+        //console.log(vehicles)
+    },[])
 
     return (
         //main container, use it for put your code
@@ -127,61 +146,22 @@ export default function Home() {
                         </View>
                     </TouchableWithoutFeedback>
                     <ScrollView>
-                        <PrimaryButton onPress={async () => {
-                            await AsyncStorage.clear();
-                        }}>
-                            Click aquí
-                        </PrimaryButton>
-                        <CarCard
-                            uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                            brand="Audi"
-                            model="A1"
-                            year="2019"
-                            status="En Renta"
-                            actions={[
-                                {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                            ]}
-                        />
-                        <CarCard
-                            uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                            brand="Audi"
-                            model="A1"
-                            year="2019"
-                            status="En Renta"
-                            actions={[
-                                {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                            ]}
-                        />
-                        <CarCard
-                            uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                            brand="Audi"
-                            model="A1"
-                            year="2019"
-                            status="En Renta"
-                            actions={[
-                                {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                            ]}
-                        />
-                        <CarCard
-                            uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                            brand="Audi"
-                            model="A1"
-                            year="2019"
-                            status="En Renta"
-                            actions={[
-                                {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                            ]}
-                        />
-                        <CarCard
-                            uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                            brand="Audi"
-                            model="A1"
-                            year="2019"
-                            status="En Renta"
-                            actions={[
-                                {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                            ]}
-                        />
+                        {
+                            vehicles.map( (v) => (
+                                <CarCard
+                                
+                                uri={v.photo}
+                                brand={v.marca}
+                                model={v.modelo}
+                                year={v.year}
+                                status={v.servicio}
+                                actions={[
+                                    {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
+                                ]}
+                            />
+                            ))
+                        }
+
                     </ScrollView>
                 </View>
             </View>
