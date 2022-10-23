@@ -62,7 +62,7 @@ export default function ImgPicker(props) {
                         width: 100,
                         height: 100,
                         backgroundColor: Colors.tertiary,
-                        borderRadius: 20,
+                        borderRadius: 100,
                         margin: 0
                    
                     }}
@@ -76,6 +76,7 @@ export default function ImgPicker(props) {
                     style={{width: 100, height: 100}}
                 >
                     <IconButton 
+                        style={{position:'absolute',top:-14,right:-15}}
                         icon='close-circle'
                         iconColor={Colors.primary}
                         onPress={() => {props.setImage(null)}}

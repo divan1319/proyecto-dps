@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, TextInput, TouchableWithoutFeedback, ScrollView } from "react-native";
-import Constants from 'expo-constants';
 import { IconButton, Text, Avatar, Portal, Modal, Provider, Button } from "react-native-paper";
 import PrimaryButton from "./../components/PrimaryButton";
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -9,18 +8,18 @@ import Colors from "../utils/Colors";
 import CarCard from "../components/CarCard";
 import SelectInput from "../components/SelectInput";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DataMessage from "../utils/DataMessage";
 import api from '../data/api';
 import axios from "axios";
-export default function Home() {
-    const [search, setSearch] = React.useState("");
-    
+
+export default function Home(props) {    
+    const [search, setSearch] = React.useState("");    
     const [clase, setClase] = React.useState("");
     const [type, setType] = React.useState("");
     const [brand, setBrand] = React.useState("");
     const [model, setModel] = React.useState("");
     const [year, setYear] = React.useState("");
     const [status, setStatus] = React.useState("");
-
     const[vehicles, setVehicles] = useState([]);
 
     const DataVehicle = async () =>{
@@ -55,9 +54,12 @@ export default function Home() {
     ];
 
     useEffect( () =>{
-        DataVehicle();
-        //console.log(vehicles)
+        DataVehicle();        
     },[])
+
+    //Cantidad Mensajes
+    let cantidaddemensajes=0;    
+    cantidaddemensajes=DataMessage.map(element =>element.quantity).reduce((a,b)=>a+b,0);
 
     return (
         //main container, use it for put your code
@@ -114,12 +116,17 @@ export default function Home() {
                     </Modal>
                 </Portal>
                 <View style={styles.header}>
+                    <View style={{flexDirection:'row'}}>
                     <IconButton 
                         icon="message"
                         iconColor={Colors.secondary}
                         style={{margin: 0}}
-                        onPress={() => {}}
+                        size={28}
+                        onPress={() => {props.navigation.navigate('HomeNavigation',{screen:'ChatRoom'})}}
                     />
+                    {cantidaddemensajes>0&&<Text style={styles.popupmensajes} >{cantidaddemensajes}</Text>}
+                    </View>
+                    
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                         <Text variant="titleLarge" style={styles.userName}>Juan Pérez</Text>
                         <Avatar.Image size={60}/>
@@ -220,4 +227,19 @@ const styles = StyleSheet.create({
         color: Colors.secondary,
         marginRight: 10,
     },
+    popupmensajes:{        
+        position:'absolute',
+        top:15,
+        left:20,
+        color: 'white',
+        fontSize:12,
+        paddingHorizontal:3,
+        paddingVertical:3,
+        fontWeights:'bold',
+        backgroundColor:'red',
+        textAlign: 'center',
+        borderRadius:100,
+        width:22,
+        height:22,        
+    }
 });

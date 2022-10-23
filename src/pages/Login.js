@@ -24,7 +24,7 @@ class Login extends React.Component {
         }
         await axios.post(api.server+'login.php',datos).then( (res) =>{
             
-            console.log(res.data)
+            console.log(res.data);
             if(res.data.user){
                 Alert.alert("¡Aviso!","¡Inicio Exitoso!")
                 console.log(res.data.user.nombre)
