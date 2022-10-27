@@ -16,7 +16,7 @@ export default function MessageCard(props) {
                             <Image style={styles.carImg} source={{uri: props.uri}}/>
                         </View>                        
                         <View style={styles.view2}>                            
-                            <Text variant="titleSmall" style={styles.textusername}>
+                            <Text numberOfLines={1} variant="titleSmall" style={styles.textusername}>
                             {props.username}
                             </Text>
                             <Text numberOfLines={1} style={styles.textmessagenobold} variant="bodyMedium">{props.textmessage}</Text>
@@ -36,7 +36,7 @@ export default function MessageCard(props) {
                             <Image style={styles.carImg} source={{uri: props.uri}}/>
                         </View>                        
                         <View style={styles.view2}>                            
-                            <Text variant="titleSmall" style={styles.textusername}>
+                            <Text numberOfLines={1} style={styles.textusername}>
                             {props.username}
                             </Text>
                             <Text numberOfLines={1} style={styles.textdatebold} variant="bodyMedium">{props.textmessage}</Text>

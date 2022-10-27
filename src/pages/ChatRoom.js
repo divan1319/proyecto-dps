@@ -46,13 +46,16 @@ const styles=StyleSheet.create({
 });
 let quantity =0;
 
-export default function ChatRoom(props) {
+export default function ChatRoom(props) {    
     
     //Se extraen las cantidades de mensajes de cada chat en forma de arreglo
     //Y luego en el render se suman con el método reduce    
     let cantidaddemensajes=0;    
-    cantidaddemensajes=DataMessage.map(element =>element.quantity).reduce((a,b)=>a+b,0);
-
+    array=DataMessage[1].chat.map(element => 
+        {element.mensajes.map(element1=>element1.textmessage)});
+    
+    console.log(array);
+    cantidaddemensajes=DataMessage[0].chat.map(element =>element.quantity).reduce((a,b)=>a+b,0);    
     const Item=({uri,username,textmessage,date,quantity,status,id})=>{
         
         return(
@@ -78,7 +81,7 @@ export default function ChatRoom(props) {
 
             }})}}>
                 <Item id={item.id} uri={item.uri} username={item.username} 
-                textmessage={item.textmessage} date={item.date} quantity={item.quantity} 
+                textmessage={item.mensajes.map(element1=>element1.id==0&&element1.textmessage)} date={item.date} quantity={item.quantity} 
                 status={item.status}   />
             </TouchableHighlight >
         )
@@ -100,7 +103,7 @@ export default function ChatRoom(props) {
                 <Text style={styles.icono}>{cantidaddemensajes}</Text>                
             </View>            
                 <FlatList
-                    data={DataMessage}
+                    data={DataMessage[0].chat}
                     renderItem={renderItem}
                     keyExtractor={item=>item.id}
                 />                        

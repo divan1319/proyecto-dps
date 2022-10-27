@@ -21,6 +21,27 @@ export default function Home(props) {
     const [year, setYear] = React.useState("");
     const [status, setStatus] = React.useState("");
     const[vehicles, setVehicles] = useState([]);
+    const [userId,setId] = useState();
+    const [userNameN,setName] = useState();
+    const [userMail,setMail] = useState();
+    const [userDui,setDui] = useState();
+    const [userCel,setCel] = useState();
+
+    //Recuperar la Informacion del usuario desde el servidor
+    const dataUsuario = async ()=>{
+        const value = JSON.parse( await AsyncStorage.getItem('userData'));
+        console.log(value);
+        setId(value[0].id)
+        setName(value[0].nombre)
+        setMail(value[0].correo)
+        setDui(value[0].dui)
+        setCel(value[0].cel)
+
+    }
+
+    useEffect( () =>{
+        dataUsuario()
+    },[])
 
     const DataVehicle = async () =>{
         await axios.get(api.server+'vehiculos').then(res => {
@@ -59,7 +80,7 @@ export default function Home(props) {
 
     //Cantidad Mensajes
     let cantidaddemensajes=0;    
-    cantidaddemensajes=DataMessage.map(element =>element.quantity).reduce((a,b)=>a+b,0);
+    cantidaddemensajes=DataMessage[0].chat.map(element =>element.quantity).reduce((a,b)=>a+b,0);
 
     return (
         //main container, use it for put your code
@@ -128,7 +149,7 @@ export default function Home(props) {
                     </View>
                     
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-                        <Text variant="titleLarge" style={styles.userName}>Juan Pérez</Text>
+                        <Text variant="titleLarge" style={styles.userName}>{userNameN}</Text>
                         <Avatar.Image size={60}/>
                     </View>
                     <Text variant="headlineSmall" style={{color: Colors.secondary}}>{actualDate.toDateString()}</Text>

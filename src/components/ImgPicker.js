@@ -41,7 +41,7 @@ export default function ImgPicker(props) {
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1,1],
-            quality: 1
+            quality: 1,            
         });
         console.log(result);
         if (!result.cancelled) {
