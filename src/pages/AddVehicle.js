@@ -127,7 +127,7 @@ export default function AddVehicle({navigation}) {
     const tt = await blobto64(blob1);
     const tt2 = await blobto64(blob2);
     const tt3 = await blobto64(blob3);
-
+    
     let dataVehicle = new FormData();
     dataVehicle.append("tipo",tipo);
     dataVehicle.append("modelo",modelo);

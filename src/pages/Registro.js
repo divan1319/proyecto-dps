@@ -125,16 +125,20 @@ export default function Registro(props){
     const [telefono,SetTelefono]=useState('');
     const [dui,SetDui]=useState('');
     const [contrasena,SetContrasena]=useState('');
-    
-    const datos = {
-        nombre: nombre,
-        contrasena: contrasena,
-        correo:correo,
-        dui:dui,
-        telefono:telefono
-    }
+
     const registro = async () => {
-        await axios.post(server.server+'register.php',datos).then( (res) =>{
+        const datos = new FormData();
+        datos.append("nombre",nombre);
+        datos.append("contrasena",contrasena);
+        datos.append("correo",correo);
+        datos.append("dui",dui);
+        datos.append("telefono",telefono);
+
+        await axios.post(server.server+'usuarios',datos,{
+            headers:{
+              'content-type':'multipart/form-data'
+            }
+        }).then( (res) =>{
             Alert.alert("¡Aviso!","¡Registro exitoso!");
             props.navigation.navigate('Login');
 
