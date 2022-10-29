@@ -83,7 +83,7 @@ export default function Profile(props) {
         <Provider>
             <View style={styles.container}>
                 <Portal>
-                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle} dismissable={false}>
                         <Text variant="bodyLarge" style={{marginBottom: 20, fontWeight: 'bold'}}>
                             Editar información de la cuenta
                         </Text>
