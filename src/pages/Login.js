@@ -22,23 +22,33 @@ class Login extends React.Component {
             email:this.state.email,
             password:this.state.password
         }
-        await axios.post(api.server+'login.php',datos).then( (res) =>{
-            
-            console.log(res.data)
-            if(res.data.user){
-                Alert.alert("¡Aviso!","¡Inicio Exitoso!")
-                console.log(res.data.user.nombre)
-                const UserData = [{id:res.data.user.id,nombre:res.data.user.nombre,correo:res.data.user.correo,dui:res.data.user.dui,cel:res.data.user.telefono}]
-                AsyncStorage.setItem('userData', JSON.stringify(UserData));
 
-                this.props.navigation.navigate('App');
-            }
+        if (this._validateInfo(datos.email)) {
+            await axios.post(api.server+'login.php',datos).then( (res) =>{
+                
+                console.log(res.data)
+                if(res.data.user){
+                    Alert.alert("¡Aviso!","¡Inicio Exitoso!")
+                    console.log(res.data.user.nombre)
+                    const UserData = [{id:res.data.user.id,nombre:res.data.user.nombre,correo:res.data.user.correo,dui:res.data.user.dui,cel:res.data.user.telefono}]
+                    AsyncStorage.setItem('userData', JSON.stringify(UserData));
 
-        }).catch (error =>{
-            console.log(error)
-        })
+                    this.props.navigation.navigate('App');
+                }
+
+            }).catch (error =>{
+                console.log(error)
+            })
+        }else{
+            Alert.alert("¡Advertencia!", "El correo electrónico ingresado es incorrecto.");
+        }
 
     };
+
+    _validateInfo = (email) => {
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        return emailRegex.test(email);
+    }
 
     render() {
         return (
@@ -66,6 +76,7 @@ class Login extends React.Component {
                             }}
                             title="Correo electrónico"
                             placeholder="example@domain.com"
+                            keyboardType="email-address"
                             value={this.state.email}
                             onChangeText={(val) => this.setState({email: val})}
                         />

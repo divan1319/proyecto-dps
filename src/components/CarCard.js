@@ -24,16 +24,17 @@ export default function CarCard(props) {
                 <Image style={styles.carImg} source={{uri: props.uri}}/>
                 <View style={styles.carInfo}>
                     <View>
-                        <Text variant="titleSmall" style={{fontWeight: 'bold'}}>
+                        <Text variant="bodyMedium" style={{fontWeight: 'bold'}}>
                             {props.brand}
                         </Text>
-                        <Text variant="bodyMedium">{props.model}</Text>
+                        <Text variant="bodySmall">{props.model}</Text>
                     </View>
+                    <Text variant="bodySmall" style={{fontWeight: 'bold'}}>{props.price}</Text>
                     <View style={{display: 'flex', flexDirection: 'row'}}>
-                        <Text variant="bodyMedium" style={{fontWeight: 'bold'}}>
+                        <Text variant="bodySmall" style={{fontWeight: 'bold'}}>
                             Año: 
                         </Text>
-                        <Text variant="bodyMedium"> {props.year}</Text>
+                        <Text variant="bodySmall"> {props.year}</Text>
                     </View>
                 </View>
                 <View style={styles.options}>
