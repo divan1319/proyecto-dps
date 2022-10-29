@@ -5746,6 +5746,11 @@
   "resolved" "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz"
   "version" "1.3.1"
 
+"react-native-mask-input@^1.2.2":
+  "integrity" "sha512-AJtyDzUgXAiUZWe6jtf4sl5FV5q603AUR71+ma2SqI2YOTQr9exOPn8ZowC/n5KE0aL/YB9dCKnf+qbd/a082w=="
+  "resolved" "https://registry.npmjs.org/react-native-mask-input/-/react-native-mask-input-1.2.2.tgz"
+  "version" "1.2.2"
+
 "react-native-paper@^5.0.0-rc.6":
   "integrity" "sha512-62SRf7vZdwTg/7JXXzcRtEwUyPUVtPu2XZNGVeJ0s96rjAud/V7Ixig7c3Za71fn7Qh/G60PBSq9Gnm0c7joSA=="
   "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-5.0.0-rc.6.tgz"

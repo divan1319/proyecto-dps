@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AppStack = createStackNavigator(
   {
-    MainApp: MainApp,
+    MainApp: MainApp,    
   },
   {
     headerMode: 'none'
