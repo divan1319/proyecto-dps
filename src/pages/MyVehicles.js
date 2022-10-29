@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CarCard from "../components/CarCard";
 import Colors from "../utils/Colors";
 
-export default function MyVehicles() {
+export default function MyVehicles(props) {
     return(
         <View style={styles.container}>
             <View style={styles.header}>
@@ -13,7 +13,7 @@ export default function MyVehicles() {
                     icon="arrow-left"
                     iconColor={Colors.secondary}
                     style={{margin: 0}}
-                    onPress={() => {}}
+                    onPress={() => props.navigation.goBack()}
                 />
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                     <Text variant="titleLarge" style={styles.userName}>Juan Pérez</Text>

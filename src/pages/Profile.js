@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import PrimaryInput from './../components/PrimaryInput';
 
 
-export default function Profile() {
+export default function Profile(props) {
         const [userId,setId] = useState();
         const [userNameN,setName] = useState();
         const [userMail,setMail] = useState();
@@ -137,7 +137,7 @@ export default function Profile() {
                         </View>
                     </Card>
                     <View style={styles.options}>
-                        <TouchableWithoutFeedback onPress={() => {}}>
+                        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("MyVehicles")}>
                             <View style={styles.optionItem}>
                                 <MaterialCommunityIcons name="car" size={24} color={Colors.primary} style={{marginRight: 10, marginLeft: 5}}/>
                                 <Text variant="bodyLarge">Ver mis vehículos</Text>
