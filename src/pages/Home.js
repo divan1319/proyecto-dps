@@ -175,18 +175,20 @@ export default function Home(props) {
                     </TouchableWithoutFeedback>
                     <ScrollView>
                         {
-                            vehicles.map( (v) => (
-                                <CarCard
-                                
-                                uri={v.photo}
-                                brand={v.marca}
-                                model={v.modelo}
-                                year={v.year}
-                                status={v.servicio}
-                                actions={[
-                                    {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
-                                ]}
-                            />
+                            vehicles.map( (v, index) => (
+                                <View key={index}>
+                                    <CarCard
+                                        uri={v.photo}
+                                        brand={v.marca}
+                                        model={v.modelo}
+                                        year={v.year}
+                                        status={v.servicio}
+                                        price="$10000"
+                                        actions={[
+                                            {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
+                                        ]}
+                                    />
+                                </View>
                             ))
                         }
 
