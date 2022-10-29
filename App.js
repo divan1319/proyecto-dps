@@ -8,6 +8,7 @@ import Login from './src/pages/Login';
 import Registro from './src/pages/Registro';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//Mensaje de prueba
 const AppStack = createStackNavigator(
   {
     MainApp: MainApp,    
