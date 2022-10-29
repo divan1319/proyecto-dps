@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from "react";
-import { ScrollView, StyleSheet, TouchableWithoutFeedback, View , BackHandler} from "react-native";
+import { ScrollView, StyleSheet, TouchableWithoutFeedback, View , BackHandler, Alert} from "react-native";
 import Constants from 'expo-constants';
 import Colors from "../utils/Colors";
 import { Avatar, Card, Text, Button, Portal, Modal, Provider } from "react-native-paper";
@@ -48,6 +48,35 @@ export default function Profile(props) {
             setNewPassword("");
             hideModal();
         }
+
+        //validate the information to update the profile
+        const validate = () => {
+            let validate = true;
+            const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            const phoneRegex = /^[0-9]{4}(-)[0-9]{4}$/i;
+
+            if (userNameN.length <= 0) {
+                validate = false;
+                Alert.alert("¡Advertencia!", "El nombre de usuario no puede estar vacío.");
+            }
+
+            if (userMail.length <= 0 || !emailRegex.test(userMail)) {
+                validate = false;
+                Alert.alert("¡Advertencia!", "El correo electrónico es incorrecto.");
+            }
+
+            if (userCel.length <= 0 || !phoneRegex.test(userCel)) {
+                validate = false;
+                Alert.alert("¡Advertencia!", "El número de teléfonico es incorrecto, ej. (0000-0000)");
+            }
+
+            if (newPassword.length < 8) {
+                validate = false;
+                Alert.alert("¡Advertencia!", "La contraseña debe tener 8 o más caracteres.");
+            }
+
+            //return validate;
+        }
     
     return (
         //main container, use it for put your code
@@ -93,7 +122,7 @@ export default function Profile(props) {
                             textColor={Colors.primary} 
                             style={{marginTop: 10}}
                             icon="content-save"
-                            onPress={() => {}} 
+                            onPress={validate} 
                         >
                             Guardar
                         </Button>
