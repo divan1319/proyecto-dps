@@ -155,6 +155,7 @@ export default function Home() {
                                 model={v.modelo}
                                 year={v.year}
                                 status={v.servicio}
+                                price="$10000"
                                 actions={[
                                     {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
                                 ]}
