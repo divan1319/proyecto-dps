@@ -170,14 +170,7 @@ export default function Registro(props){
     })
     const [seeTextContrasena,setSeeTextContrasena]=useState(true);
     const [image,setImage]=useState(null);
-    const datos = {
-        nombre: nombre,
-        contrasena: contrasena,
-        correo:correo,
-        dui:dui,
-        telefono:telefono
-    };  
-
+    
     const handleChangeContrasena=password=>{
         setContrasena(password);
         setContrasenaValidada({
@@ -284,13 +277,23 @@ export default function Registro(props){
             &&correoValidado.validado&&nombreValidado.validado&&telefonoValidado.validado&&duiValidado.validado)
             {
                 console.log(contrasenaValidada.longitud + "HOLA!!!");
-                await axios.post(server.server+'register.php',datos).then( (res) =>{
-                Alert.alert("¡Aviso!","¡Registro exitoso!");
-                props.navigation.navigate('Login');
-    
-            }).catch( err =>{
-                console.log(err)
-            })        
+                const datos = new FormData();
+                datos.append("nombre",nombre);
+                datos.append("contrasena",contrasena);
+                datos.append("correo",correo);
+                datos.append("dui",dui);
+                datos.append("telefono",telefono);
+
+                await axios.post(server.server+'usuarios',datos,{
+                    headers:{
+                      'content-type':'multipart/form-data'
+                    }
+                }).then( (res) =>{
+                    Alert.alert("¡Aviso!","¡Registro exitoso!");
+                    props.navigation.navigate('Login');
+                }).catch( err =>{
+                    console.log(err)
+                })        
             }
     }
     return(        
