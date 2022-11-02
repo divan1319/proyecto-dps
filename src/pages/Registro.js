@@ -11,7 +11,7 @@ import server from '../data/api';
 const regexdui=new RegExp(/^[0]\d{7}[-]\d{1}$/);
 const regextelefono=new RegExp(/^(6|7)\d{3}[-]\d{4}$/);
 const regexcorreoelectronico=new RegExp(/^[a-zA-Z0-9]+[a-zA-Z0-9._-]+[a-zA-Z0-9]+@+([(gmail|hotmail|outlook|yahoo)]+\.com|(alumno+\.+udb+\.+edu+\.+sv))$/);
-const regexnombre=new RegExp(/^[a-zA-Z]+\s?[a-zA-Z]+$/);
+const regexnombre=new RegExp(/^[a-zA-Z]*\s?[a-zA-Z]*\s?[a-zA-Z]*\s?[a-zA-Z]*$/);
 const regexpassword=new RegExp(/(?=^.{8,})(?=.*[0-9]{1,})(?=.*[A-Z]{1,})(?=.*[^A-Za-z0-9]{1,})(?!.* $).+/);
 const regexpasswordMayusculas=new RegExp(/[A-Z]+/);
 const regexpasswordNumeros=new RegExp(/(?=.*[0-9]+).*/);
@@ -276,6 +276,7 @@ export default function Registro(props){
         if(contrasenaValidada.longitud&&contrasenaValidada.mayuscula&&contrasenaValidada.numero&&contrasenaValidada.specialcaracter
             &&correoValidado.validado&&nombreValidado.validado&&telefonoValidado.validado&&duiValidado.validado)
             {
+                //Llamada a la API para mandar la información al servidor
                 console.log(contrasenaValidada.longitud + "HOLA!!!");
                 const datos = new FormData();
                 datos.append("nombre",nombre);
