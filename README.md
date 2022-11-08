@@ -48,3 +48,4 @@ La aplicación trabaja con React Native, por ende se necesitan conocimientos pre
  - Manual Técnico [https://drive.google.com/file/d/1VThrB2Wnr-qHG-i_WHL7b55LsAGWCc3Z/view?usp=sharing]
  - Manual de Usuario [https://drive.google.com/file/d/1ODZAFZv7Hsmb-OL-BAp-ZG9QN0o8s0oD/view?usp=sharing]
  - Link Video [Avance proyecto - FASE II] [https://drive.google.com/file/d/1-Tr3v9YynOwDWXkBLvouqDfe_vabTRSg/view?usp=sharing]
+ - Link Repositorio del Backend [https://github.com/divan1319/backend-app]
