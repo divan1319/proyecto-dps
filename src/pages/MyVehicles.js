@@ -1,69 +1,105 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, {useState,useEffect} from "react";
+import { StyleSheet, View, ScrollView, Alert, RefreshControl } from "react-native";
 import { Text, Avatar, IconButton } from "react-native-paper";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CarCard from "../components/CarCard";
 import Colors from "../utils/Colors";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../data/api';
+import axios from "axios";
+export default function MyVehicles({route,navigation}) {
 
-export default function MyVehicles(props) {
+    const [myVehicles, setMyVehicle] = useState([]);
+    const [datosUser, setDatosUser] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+
+    const dataUsuario = async ()=>{
+        const value = JSON.parse( await AsyncStorage.getItem('userData'));
+        setDatosUser(value);
+
+    }
+    const myVehicle = async () =>{
+        let id = route.params.id
+        await axios.get(api.server+'myvehiculos/'+id).then( res=>{
+            if(res.status == "200"){
+                setMyVehicle(res.data.results);
+                
+            }else {
+                Alert.alert("¡Atención!","Aún no has publicado ningún vehículo");
+            }
+        }
+        ).catch(err => {
+            
+            Alert.alert("¡Atención!","Aún no has publicado ningún vehículo");
+        });
+    }
+
+    const onRefresh = React.useCallback(async () =>{
+        setRefreshing(true);
+        await myVehicle();
+        setRefreshing(false);
+    })
+    useEffect( () =>{
+        dataUsuario();
+        myVehicle();
+    },[])
     return(
-        <View style={styles.container}>
+        <View style={styles.container} refre>
             <View style={styles.header}>
                 <IconButton 
                     icon="arrow-left"
                     iconColor={Colors.secondary}
                     style={{margin: 0}}
-                    onPress={() => props.navigation.goBack()}
+                    onPress={() => navigation.goBack()}
                 />
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-                    <Text variant="titleLarge" style={styles.userName}>Juan Pérez</Text>
-                    <Avatar.Image size={60}/>
+
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <MaterialCommunityIcons name="car-multiple" size={26} color="white" style={{marginRight: 15}}/>
                     <Text variant="titleLarge" style={{color: Colors.secondary}}>Mis vehiculos</Text>
                 </View>
             </View>
-            <ScrollView style={styles.mainContent}>
-                <CarCard
-                    uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                    brand="Audi"
-                    model="A1"
-                    year="2019"
-                    status="En Renta"
-                    price="$34000"
-                    actions={[
-                        {key: 1, icon: 'delete', callback: (e) => console.log("hola mundo")},
-                        {key: 2, icon: 'circle-edit-outline', callback: (e) => console.log("hola mundo")},
-                        {key: 3, icon: 'eye', callback: (e) => console.log("hola mundo")}
-                    ]}
+            <ScrollView style={styles.mainContent} refreshControl={
+                <RefreshControl 
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
                 />
-                <CarCard
-                    uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                    brand="Audi"
-                    model="A1"
-                    year="2019"
-                    status="En Renta"
-                    price="$34000"
-                    actions={[
-                        {key: 1, icon: 'delete', callback: (e) => console.log("hola mundo")},
-                        {key: 2, icon: 'circle-edit-outline', callback: (e) => console.log("hola mundo")},
-                        {key: 3, icon: 'eye', callback: (e) => console.log("hola mundo")}
-                    ]}
-                />
-                <CarCard
-                    uri="https://loscoches.com/wp-content/uploads/2019/09/carro-nuevo-o-carro-usado.jpg"
-                    brand="Audi"
-                    model="A1"
-                    year="2019"
-                    status="En Renta"
-                    price="$34000"
-                    actions={[
-                        {key: 1, icon: 'delete', callback: (e) => console.log("hola mundo")},
-                        {key: 2, icon: 'circle-edit-outline', callback: (e) => console.log("hola mundo")},
-                        {key: 3, icon: 'eye', callback: (e) => console.log("hola mundo")}
-                    ]}
-                />
+            }>
+                {
+                    myVehicles.map( (v) => (
+                        <View key={v.idPublication}>
+                            <CarCard 
+                                uri={v.photo1}
+                                brand={v.marca}
+                                model={v.modelo}
+                                year={v.year}
+                                status={v.servicio}
+                                price={"$"+v.precio}
+                                actions={[
+                                    {key: 1, icon: 'delete', callback: (e) => console.log("hola mundo")},
+                                    {key: 2, icon: 'circle-edit-outline', callback: () => navigation.navigate("EditVehicle",{
+                                        id:v.idPublication,
+                                        photo:v.photo1,
+                                        photo2:v.photo2,
+                                        photo3:v.photo3,
+                                        yearV:v.year,
+                                        descV:v.desc,
+                                        priceV:v.precio,
+                                        claseid:v.idclase,
+                                        tipoid:v.idtipo,
+                                        marcaid:v.idmarca,
+                                        modeloid:v.idmodelo,
+                                        servicioid:v.idservicio,
+                                        estadoid:v.idestado
+                                    })},
+                                    {key: 3, icon: 'eye', callback: (e) => console.log("hola mundo")}
+                                ]}
+                            />
+                        </View>
+                    )
+                    )
+                }
             </ScrollView>
         </View>
     );

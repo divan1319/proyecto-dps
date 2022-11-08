@@ -4,26 +4,47 @@ import Constants from 'expo-constants';
 import {Badge,Text,DataTable,Button} from 'react-native-paper';
 import Colors from "../utils/Colors";
 
-export default function VehicleInformation() {
+export default function VehicleInformation({route, navigation}) {
+    const {tipoV,
+      claseV,
+      marcaV,
+      modeloV,
+      estadoV,
+      descV,
+      userU,
+      correoU,
+      celU,
+      yearV,
+      servicioV,
+      precioV,
+      photo1,
+      photo2,
+      photo3} = route.params;
     return (
 <ScrollView style={styles.container}>
       <ScrollView horizontal={true}>
         <Image
           style={styles.carrousel}
           source={{
-            uri: "https://media.sketchfab.com/models/0741fd5bec5e4c6cb1cf2774763d1601/thumbnails/c594ba23ef8645a9a51cbab6cd7512bd/1d8541ab54724319a306ccb985d5863e.jpeg",
+            uri:photo1,
           }}
         />
         <Image
           style={styles.carrousel}
           source={{
-            uri: "https://www.racedepartment.com/attachments/__custom_showroom_1571903652-jpg.331077/",
+            uri:photo2,
+          }}
+        />
+        <Image
+          style={styles.carrousel}
+          source={{
+            uri:photo3,
           }}
         />
       </ScrollView>
       <View style={styles.boxHeader}>
-        <Badge style={styles.servicio}>En venta</Badge>
-        <Text style={styles.price}>$1500</Text>
+        <Badge style={styles.servicio}>{servicioV}</Badge>
+        <Text style={styles.price}>${precioV}</Text>
       </View>
       <View>
         <Text style={{ margin: 10, fontWeight: "700" }}>Detalles</Text>
@@ -34,9 +55,9 @@ export default function VehicleInformation() {
             <DataTable.Title>Estado</DataTable.Title>
           </DataTable.Header>
           <DataTable.Row>
-            <DataTable.Cell>Automovil</DataTable.Cell>
-            <DataTable.Cell>Deportivo</DataTable.Cell>
-            <DataTable.Cell>Semi-Nuevo</DataTable.Cell>
+            <DataTable.Cell>{claseV}</DataTable.Cell>
+            <DataTable.Cell>{tipoV}</DataTable.Cell>
+            <DataTable.Cell>{estadoV}</DataTable.Cell>
           </DataTable.Row>
         </DataTable>
         <DataTable style={styles.tabla}>
@@ -46,9 +67,9 @@ export default function VehicleInformation() {
             <DataTable.Title>Año</DataTable.Title>
           </DataTable.Header>
           <DataTable.Row>
-            <DataTable.Cell>Mazda</DataTable.Cell>
-            <DataTable.Cell>RX8</DataTable.Cell>
-            <DataTable.Cell>2019</DataTable.Cell>
+            <DataTable.Cell>{marcaV}</DataTable.Cell>
+            <DataTable.Cell>{modeloV}</DataTable.Cell>
+            <DataTable.Cell>{yearV}</DataTable.Cell>
           </DataTable.Row>
         </DataTable>
       </View>
@@ -65,22 +86,23 @@ export default function VehicleInformation() {
             borderRadius: 20,
           }}
         >
-          
-          Encontrar ese color perfecto con nuestro selector de color y descubrir
-          bellas armonías de color, tintes, matices y tonos; códigos de color de
-          entrada Hex, los valores RGB y HSL, y generar HTML, CSS y estilos
-          SCSS.
+          {descV}
         </Text>
       </View>
       <Text style={{ margin: 10, marginTop: 20, fontWeight: "700" }}>
         Anunciante
       </Text>
       <View style={styles.anunciante}>
-        <Text style={{ fontSize: 20, fontWeight: "400" }}>Juan Valdez</Text>
-        <Text>valdez@gmail.com</Text>
-        <Text>71732101</Text>
+        <Text style={{ fontSize: 20, fontWeight: "400" }}>{userU}</Text>
+        <Text>{correoU}</Text>
+        <Text>{celU}</Text>
       </View>
-      <Button icon="email" textColor="#FFFFFF" style={{margin:20,width:200,backgroundColor:'black',alignSelf:'center'}}>Contactar</Button>
+      <Button icon="email" textColor="#FFFFFF" style={{margin:20,width:200,backgroundColor:'black',alignSelf:'center'}} onPress={ () => {navigation.navigate("ChatUser",{
+      idSender:route.params.idvendedor,
+      idReceiver:route.params.idcomprador,
+      userSender:userU,
+      userRec:route.params.userNameN
+      })}} >Contactar</Button>
     </ScrollView>
     );
 }
@@ -116,7 +138,7 @@ const styles = StyleSheet.create({
     },
     anunciante: {
       flexDirection: "column",
-      backgroundColor: "#fff",
+      backgroundColor: "#FFFFFF",
       margin: 20,
       padding: 10,
       borderRadius: 20,

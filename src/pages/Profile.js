@@ -6,6 +6,8 @@ import { Avatar, Card, Text, Button, Portal, Modal, Provider } from "react-nativ
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PrimaryInput from './../components/PrimaryInput';
+import api from '../data/api';
+import axios from "axios";
 
 
 export default function Profile(props) {
@@ -14,6 +16,7 @@ export default function Profile(props) {
         const [userMail,setMail] = useState();
         const [userDui,setDui] = useState();
         const [userCel,setCel] = useState();
+        const [foto, setFoto] = useState();
         //new password
         const [newPassword, setNewPassword] = useState("");
 
@@ -36,6 +39,7 @@ export default function Profile(props) {
             setMail(value[0].correo)
             setDui(value[0].dui)
             setCel(value[0].cel)
+            setFoto(value[0].foto);
 
         }
         useEffect( () =>{
@@ -50,32 +54,57 @@ export default function Profile(props) {
         }
 
         //validate the information to update the profile
-        const validate = () => {
+        const validate = async () => {
             let validate = true;
             const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             const phoneRegex = /^[0-9]{4}(-)[0-9]{4}$/i;
+            let dataUpdate = new FormData();
+            dataUpdate.append("id",userId);
+            dataUpdate.append("nombre",userNameN);
+            dataUpdate.append("correo",userMail);
+            dataUpdate.append("dui",userDui);
+            dataUpdate.append("telefono",userCel);
 
-            if (userNameN.length <= 0) {
+            if (userNameN.length <= 0 && userMail.length <= 0 && !emailRegex.test(userMail) && userCel.length <= 0 || !phoneRegex.test(userCel) && newPassword.length == 0 &&newPassword.length < 8) {
                 validate = false;
-                Alert.alert("¡Advertencia!", "El nombre de usuario no puede estar vacío.");
-            }
+                Alert.alert("¡Advertencia!", `Algunos campos no pueden ir vacios y asegurate de escribirlos bien.
+                \nEjemplo de correo:example@correo.com \nEjemplo de número teléfonico: 7555-0000`);
+                console.log(newPassword)
+            }else if( newPassword.length != 0 && newPassword.length >8){
+                dataUpdate.append("newPass",newPassword)
+                await axios.post(api.server+'register.php?op=updUser',dataUpdate,{
+                    headers:{
+                        'content-type':'multipart/form-data'
+                      }
+                }).then(res => {
+                    if(res.data.error == false){
+                        Alert.alert("¡Aviso!","Contraseña Actualizada Correctamente");
+                        setNewPassword("");
+                        hideModal();
+                    }else{
+                        Alert.alert("¡Advertencia!","No se pudo actualizar la contraseña");
+                    }
+                }).catch(error =>{
+                    console.log(error)
+                })
+            }else{
+                await axios.post(api.server+'register.php?op=updUser',dataUpdate,{
+                    headers:{
+                        'content-type':'multipart/form-data'
+                      }
+                }).then(res => {
+                    if(res.data.error == false){
+                        
+                        Alert.alert("¡Aviso!","Datos Actualizados Correctamente\n\nInicia Sesión nuevamente para ver los cambios realizados");
+                        hideModal();
 
-            if (userMail.length <= 0 || !emailRegex.test(userMail)) {
-                validate = false;
-                Alert.alert("¡Advertencia!", "El correo electrónico es incorrecto.");
+                    }else{
+                        Alert.alert("¡Advertencia!","No se pudo actualizar la información");
+                    }
+                }).catch(error =>{
+                    console.log(error)
+                })   
             }
-
-            if (userCel.length <= 0 || !phoneRegex.test(userCel)) {
-                validate = false;
-                Alert.alert("¡Advertencia!", "El número de teléfonico es incorrecto, ej. (0000-0000)");
-            }
-
-            if (newPassword.length < 8) {
-                validate = false;
-                Alert.alert("¡Advertencia!", "La contraseña debe tener 8 o más caracteres.");
-            }
-
-            //return validate;
         }
     
     return (
@@ -135,7 +164,7 @@ export default function Profile(props) {
                     <Text variant="titleLarge" style={styles.title}>
                         Mi perfil
                     </Text>
-                    <Avatar.Image size={80} source={{uri:'https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg'}} />
+                    <Avatar.Image size={80} source={{uri:foto}} />
                     <Text variant="headlineSmall" style={styles.userName}>{userNameN}</Text>
                 </View>
                 <ScrollView style={styles.mainContent}>
@@ -166,7 +195,9 @@ export default function Profile(props) {
                         </View>
                     </Card>
                     <View style={styles.options}>
-                        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("MyVehicles")}>
+                        <TouchableWithoutFeedback onPress={() => props.navigation.navigate("MyVehicles",{
+                            id:userId
+                        })}>
                             <View style={styles.optionItem}>
                                 <MaterialCommunityIcons name="car" size={24} color={Colors.primary} style={{marginRight: 10, marginLeft: 5}}/>
                                 <Text variant="bodyLarge">Ver mis vehículos</Text>

@@ -25,15 +25,13 @@ class Login extends React.Component {
 
         if (this._validateInfo(datos.email)) {
             await axios.post(api.server+'login.php',datos).then( (res) =>{
-                
-                console.log(res.data)
                 if(res.data.user){
                     Alert.alert("¡Aviso!","¡Inicio Exitoso!")
-                    console.log(res.data.user.nombre)
-                    const UserData = [{id:res.data.user.id,nombre:res.data.user.nombre,correo:res.data.user.correo,dui:res.data.user.dui,cel:res.data.user.telefono}]
+                    const UserData = [{id:res.data.user.id,foto:res.data.user.foto,nombre:res.data.user.nombre,correo:res.data.user.correo,dui:res.data.user.dui,cel:res.data.user.telefono}]
                     AsyncStorage.setItem('userData', JSON.stringify(UserData));
-
                     this.props.navigation.navigate('App');
+                }else{
+                    Alert.alert("¡Aviso!",res.data.error)
                 }
 
             }).catch (error =>{
