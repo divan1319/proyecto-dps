@@ -22,7 +22,7 @@ export default function MyVehicles({route,navigation}) {
         let id = route.params.id
         await axios.get(api.server+'myvehiculos/'+id).then( res=>{
             if(res.status == "200"){
-                setMyVehicle(res.data.results);
+                setMyVehicle(res.data.results == undefined ? [] : res.data.results);
                 
             }else {
                 Alert.alert("¡Atención!","Aún no has publicado ningún vehículo");
