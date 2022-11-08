@@ -52,7 +52,7 @@ export default function Home({navigation}) {
         await axios.get(api.server+'vehiculos/'+userId).then(res => {
             //console.log(res.data.results)
             if(res.status == "200"){
-                setVehicles(res.data.results);
+                setVehicles(res.data.results == undefined ? [] : res.data.results);
             }
         }).catch(error =>{
             console.log(error)
