@@ -1,4 +1,4 @@
 export default {
-    server:"http://192.168.42.81/backend-app/",
+    server:"http://192.168.0.11/backend-app/",
 
 }

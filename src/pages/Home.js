@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, TextInput, TouchableWithoutFeedback, ScrollView } from "react-native";
-import { IconButton, Text, Avatar, Portal, Modal, Provider, Button } from "react-native-paper";
+import React, { useEffect, useState,Suspense,lazy } from "react";
+import { StyleSheet, View, TextInput, TouchableWithoutFeedback, ScrollView, Alert, RefreshControl } from "react-native";
+import { IconButton, Text, Avatar, Portal, Modal, Provider, Button,ActivityIndicator } from "react-native-paper";
 import PrimaryButton from "./../components/PrimaryButton";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,51 +8,131 @@ import Colors from "../utils/Colors";
 import CarCard from "../components/CarCard";
 import SelectInput from "../components/SelectInput";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import DataMessage from "../utils/DataMessage";
 import api from '../data/api';
 import axios from "axios";
 
-export default function Home(props) {    
+export default function Home({navigation}) {    
     const [search, setSearch] = React.useState("");    
-    const [clase, setClase] = React.useState("");
-    const [type, setType] = React.useState("");
-    const [brand, setBrand] = React.useState("");
-    const [model, setModel] = React.useState("");
-    const [year, setYear] = React.useState("");
-    const [status, setStatus] = React.useState("");
+    const [marcaV, setMarcaV] = useState([]);
+    const [modeloV, setModeloV] = useState([]);
+    const [brand, setBrand] = React.useState();
+    const [model, setModel] = React.useState();
+    const [year, setYear] = React.useState();
+    const [status, setStatus] = React.useState();
     const[vehicles, setVehicles] = useState([]);
     const [userId,setId] = useState();
     const [userNameN,setName] = useState();
-    const [userMail,setMail] = useState();
-    const [userDui,setDui] = useState();
-    const [userCel,setCel] = useState();
+    const [userFoto,setFoto] = useState();
+    const [totalMsg, setTotalMsg] = useState("");
 
+    const [refreshing, setRefreshing] = useState(false);
     //Recuperar la Informacion del usuario desde el servidor
     const dataUsuario = async ()=>{
         const value = JSON.parse( await AsyncStorage.getItem('userData'));
-        console.log(value);
         setId(value[0].id)
         setName(value[0].nombre)
-        setMail(value[0].correo)
-        setDui(value[0].dui)
-        setCel(value[0].cel)
-
+        setFoto(value[0].foto)
+    }
+    const TotalMsg = async () =>{
+        let id = new FormData();
+        id.append("id",userId);
+        await axios.post(api.server+'chat.php?op=getTotal',id,{
+            headers:{
+                "content-type":"multipart/form-data"
+            }
+        }).then(res =>{
+            setTotalMsg(res.data.totalmsg[0].total)
+            
+        }).catch(error =>{
+            
+        });
     }
 
-    useEffect( () =>{
-        dataUsuario()
-    },[])
-
     const DataVehicle = async () =>{
-        await axios.get(api.server+'vehiculos').then(res => {
+        await axios.get(api.server+'vehiculos/'+userId).then(res => {
             //console.log(res.data.results)
             if(res.status == "200"){
                 setVehicles(res.data.results);
-                console.log("Datos cargados")
             }
         }).catch(error =>{
             console.log(error)
         })
+    }
+
+    const SearchVehicle = async () => {
+        let id = new FormData();
+        id.append("id",userId);
+        await axios.post(api.server+'filters.php?search='+search,id,{
+            headers:{
+                "content-type":"multipart/form-data"
+            }
+        }).then(res =>{
+            if(res.data.total > 0){
+                setVehicles(res.data.vehicle);
+                Alert.alert("¡Aviso!","Se han encontrado modelos según tu busqueda");
+                setSearch("");
+            }else{
+                Alert.alert("¡Aviso!","No hay ningún resultado de acuerdo a tu búsqueda");
+            }
+        }).catch(error =>{
+            console.log(error)
+        });
+    }
+    const MostrarMarcaVehiculo = async () => {
+    
+        await axios
+          .get(api.server + "marca")
+          .then((res) => {
+            if (res.data.status == "200") {
+              setMarcaV(res.data.results);
+    
+            } else {
+              console.log(res.data.status);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      const MostrarModeloVehiculo = async () => {
+        const idmarca = brand;
+        await axios
+          .get(api.server + "modelo/marca/" + idmarca)
+          .then((res) => {
+            if (res.data.status == "200") {
+              setModeloV(res.data.results);
+            } else {
+              console.log(res.data.status);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+    const Filters = async () =>{
+        let filtros = new FormData();
+        filtros.append("marca",brand);
+        filtros.append("modelo",model);
+        filtros.append("year",year);
+        filtros.append("estado",status);
+        filtros.append("id",userId);
+        await axios.post(api.server+'filters.php',filtros,{
+            headers:{
+                "content-type":"multipart/form-data"
+            }
+        }).then(res =>{
+            if(res.data.total > 0){
+                setVehicles(res.data.vehicle);
+                Alert.alert("¡Aviso!","Se han encontrado vehiculos con los filtros aplicados");
+                hideModal();
+                
+            }else{
+                Alert.alert("¡Aviso!","No hay ningún resultado de acuerdo a tu búsqueda");
+            }
+            
+        }).catch(error =>{
+            console.log(error)
+        });
     }
 
     //handle if the filter modal should be visible or not.
@@ -61,26 +141,46 @@ export default function Home(props) {
     const hideModal = () => setVisible(false);
     //styles for the modal
     const containerStyle = {backgroundColor: 'white', padding: 20, paddingBottom: 10, margin: 10, height: '80%'};
-
     //date options
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     const actualDate = new Date();
 
     //data example for input
     const data = [
-        {key: 1, value: "Primero"},
-        {key: 2, value: "Segundo"},
-        {key: 3, value: "Tercero"},
-        {key: 4, value: "Cuarto"},
+        {key: 2010, value: "2010"},
+        {key: 2011, value: "2011"},
+        {key: 2012, value: "2012"},
+        {key: 2013, value: "2013"},
+        {key: 2014, value: "2014"},
+        {key: 2015, value: "2015"},
+        {key: 2016, value: "2016"},
+        {key: 2017, value: "2017"},
+        {key: 2018, value: "2018"},
+        {key: 2019, value: "2019"},
+        {key: 2020, value: "2020"},
+        {key: 2021, value: "2021"},
+        {key: 2022, value: "2022"},
     ];
+    const dataEstado = [
+        { key: "1", value: "Nuevo" },
+        { key: "2", value: "Semi-Nuevo" },
+        { key: "3", value: "Usado" },
+      ];
+    const onRefresh = React.useCallback(async () =>{
+        setRefreshing(true);
+        await lazy(DataVehicle());
+        setRefreshing(false);
+    })
 
     useEffect( () =>{
-        DataVehicle();        
-    },[])
+        dataUsuario();
+        lazy(DataVehicle());
+        MostrarMarcaVehiculo();
+        setInterval(TotalMsg,1000);
+        
+    },[userId])
 
     //Cantidad Mensajes
-    let cantidaddemensajes=0;    
-    cantidaddemensajes=DataMessage[0].chat.map(element =>element.quantity).reduce((a,b)=>a+b,0);
+    let cantidaddemensajes=0; 
 
     return (
         //main container, use it for put your code
@@ -91,30 +191,20 @@ export default function Home(props) {
                         <ScrollView style={{flex: 1}}>
                             <SelectInput
                                 containerStyle={{marginBottom: 10}}
-                                title="Clase del vehículo"
-                                placeholder="Seleccionar clase..."
-                                data={data}
-                                setSelected={setClase}
-                            />
-                            <SelectInput
-                                containerStyle={{marginBottom: 10}}
-                                title="Tipo vehículo"
-                                placeholder="Seleccionar tipo..."
-                                data={data}
-                                setSelected={setType}
-                            />
-                            <SelectInput
-                                containerStyle={{marginBottom: 10}}
                                 title="Marca del vehículo"
                                 placeholder="Seleccionar marca..."
-                                data={data}
+                                data={marcaV.map((m) =>({ key: m.id, value: m.marca }))}
                                 setSelected={setBrand}
+                                onSelect={MostrarModeloVehiculo}
                             />
                             <SelectInput
                                 containerStyle={{marginBottom: 10}}
                                 title="Modelo del vehículo"
                                 placeholder="Seleccionar modelo..."
-                                data={data}
+                                data={modeloV.map((mm) => ({
+                                    key: mm.id,
+                                    value: mm.modelo,
+                                  }))}
                                 setSelected={setModel}
                             />
                             <SelectInput
@@ -128,11 +218,11 @@ export default function Home(props) {
                                 containerStyle={{marginBottom: 10}}
                                 title="Estatus del vehículo"
                                 placeholder="Seleccionar estatus..."
-                                data={data}
+                                data={dataEstado}
                                 setSelected={setStatus}
                             />
                         </ScrollView>
-                        <Button textColor={Colors.primary} onPress={() => {}} style={{marginTop: 10}}>Aceptar</Button>
+                        <Button textColor={Colors.primary} onPress={Filters} style={{marginTop: 10}}>Aceptar</Button>
                         <Button textColor="#EA3333" onPress={hideModal}>Cancelar</Button>
                     </Modal>
                 </Portal>
@@ -143,14 +233,16 @@ export default function Home(props) {
                         iconColor={Colors.secondary}
                         style={{margin: 0}}
                         size={28}
-                        onPress={() => {props.navigation.navigate('HomeNavigation',{screen:'ChatRoom'})}}
+                        onPress={() => {navigation.navigate('ChatRoom',{
+                            id:userId
+                        })}}
                     />
-                    {cantidaddemensajes>0&&<Text style={styles.popupmensajes} >{cantidaddemensajes}</Text>}
+                    <Text style={styles.popupmensajes} >{totalMsg}</Text>
                     </View>
                     
                     <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                         <Text variant="titleLarge" style={styles.userName}>{userNameN}</Text>
-                        <Avatar.Image size={60}/>
+                        <Avatar.Image source={{uri:userFoto}} size={60}/>
                     </View>
                     <Text variant="headlineSmall" style={{color: Colors.secondary}}>{actualDate.toDateString()}</Text>
                 </View>
@@ -161,10 +253,11 @@ export default function Home(props) {
                     <View style={styles.searchBar}>
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="Buscar un vehículo..."
+                            placeholder="Busca el modelo de tu vehiculo..."
                             value={search}
                             onChangeText={setSearch}
                         />
+                        <Button onPress={SearchVehicle} textColor="black">Buscar</Button>
                         <FontAwesome5 name="search" size={24} color={Colors.primary} />
                     </View>
                     <TouchableWithoutFeedback onPress={showModal}>
@@ -173,22 +266,48 @@ export default function Home(props) {
                             <Text variant="titleMedium" style={{marginLeft: 10}}>Filtros</Text>
                         </View>
                     </TouchableWithoutFeedback>
-                    <ScrollView>
+                    <ScrollView refreshControl={
+                        <RefreshControl 
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        />
+                    }>
                         {
                             vehicles.map( (v, index) => (
-                                <View key={index}>
+                                <View key={index}>     
                                     <CarCard
                                         uri={v.photo}
                                         brand={v.marca}
                                         model={v.modelo}
                                         year={v.year}
                                         status={v.servicio}
-                                        price="$10000"
+                                        price={"$"+v.precio}
                                         actions={[
-                                            {key: 1, icon: 'car-key', callback: (e) => console.log("hola mundo")}
+                                            {key: v.idPublication, icon: 'eye', callback: (e) => navigation.navigate("VehicleInformation",{
+                                                tipoV:v.tipo,
+                                                claseV:v.clase,
+                                                marcaV:v.marca,
+                                                modeloV:v.modelo,
+                                                estadoV:v.estado,
+                                                descV:v.desc,
+                                                userU:v.usuario,
+                                                correoU:v.correo,
+                                                celU:v.cel,
+                                                yearV:v.year,
+                                                servicioV:v.servicio,
+                                                precioV:v.precio,
+                                                photo1:v.photo,
+                                                photo2:v.photo2,
+                                                photo3:v.photo3,
+                                                idvendedor:v.idvendedor,
+                                                idcomprador:userId,
+                                                userComprador:userNameN
+                                            })}
                                         ]}
                                     />
+                                    
                                 </View>
+                                
                             ))
                         }
 

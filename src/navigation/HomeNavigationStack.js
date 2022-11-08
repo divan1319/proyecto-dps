@@ -3,6 +3,7 @@ import { createStackNavigator, } from "@react-navigation/stack";
 import ChatRoom from "../pages/ChatRoom";
 import Home from "../pages/Home";
 import ChatUser from "../pages/ChatUser";
+import VehicleInformation from './../pages/VehicleInformation';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,11 @@ export default function HomeNavigationStack() {
       <Stack.Screen
         name="ChatUser"
         component={ChatUser}
+        options={{ headerShown: false }}
+      />
+            <Stack.Screen
+        name="VehicleInformation"
+        component={VehicleInformation}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
