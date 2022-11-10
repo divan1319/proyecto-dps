@@ -147,8 +147,11 @@ export default function AddVehicle({route,navigation}) {
           'content-type':'multipart/form-data'
         }
       }).then((res) =>{
+        
         if(res.status == 200){
           Alert.alert("Vehículo Publicado Exitosamente");
+          setImage(null);setImage2(null);setImage3(null);setClase();setTipo();
+          setMarca();setModelo();setAnio();setDescripcion("");setEstado();setPrecio();setService();
           navigation.navigate('Home');
         }else{
           Alert.alert("Hubo un error para publicar tu Vehículo");
